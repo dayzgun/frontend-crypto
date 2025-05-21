@@ -18,7 +18,8 @@ export default function ResetPassword() {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const username = location.state?.username  // ← se pasó desde VerifyCodeReset
+  const username = location.state?.username
+  const code = location.state?.code
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -65,12 +66,18 @@ export default function ResetPassword() {
 
       const res = await axios.post(
         'https://crypto-backend-production-56d2.up.railway.app/reset-password',
-        { username, password_hash: hash }
+        {
+          username,
+          new_password_hash: hash,
+          code
+        }
       )
 
       setVariant('success')
       setMessage('✅ ' + res.data.msg)
-      setTimeout(() => navigate('/'), 1000)
+      setTimeout(() => {
+        navigate('/', { state: { resetSuccess: true } })
+      }, 1500)
     } catch (err) {
       setVariant('danger')
       setMessage('❌ ' + (err.response?.data?.error || 'Error al restablecer contraseña'))
