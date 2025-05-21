@@ -75,6 +75,10 @@ export default function Home() {
             alt="Crypto Logo"
             style={{ width: '80px', marginBottom: '0.5rem' }}
           />
+          {/* Slogan */}
+          <p className="text-white-50 fst-italic mb-2" style={{ fontSize: '0.9rem' }}>
+            Tu puerta al universo cripto
+          </p>
           <h2 className="fw-bold text-white" style={{ fontSize: '1.5rem' }}>
             Iniciar sesión
           </h2>
@@ -135,14 +139,11 @@ export default function Home() {
             </Link>
           </div>
 
-<div className="text-center mt-2">
-  <Link to="/forgot-password" className="fw-bold" style={{ color: '#fbbc04' }}>
-    ¿Olvidaste tu contraseña? Haz clic aquí
-  </Link>
-</div>
-
-
-
+          <div className="text-center mt-2">
+            <Link to="/forgot-password" className="fw-bold" style={{ color: '#fbbc04' }}>
+              ¿Olvidaste tu contraseña? Haz clic aquí
+            </Link>
+          </div>
         </Form>
       </Card>
     </div>

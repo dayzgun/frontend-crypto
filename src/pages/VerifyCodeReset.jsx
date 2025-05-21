@@ -14,22 +14,23 @@ export default function VerifyCodeReset() {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      // 📨 Enviamos usuario + código de verificación al backend
+      // 📨 Enviamos usuario + código para solo verificar
       const res = await axios.post(
-        'https://crypto-backend-production-56d2.up.railway.app/verify-reset-code',
-        { username, code }
+        'https://crypto-backend-production-56d2.up.railway.app/reset-password',
+        { username, code, only_verify: true }
       )
 
       // ✅ Éxito: redirigir al formulario para establecer nueva contraseña
       setVariant('success')
-      setMessage('✅ Código válido. Redirigiendo...')
+      setMessage('✅ ' + res.data.msg)
       setTimeout(() => {
         navigate('/reset-password', { state: { username, code } })
       }, 1000)
     } catch (err) {
       setVariant('danger')
       setMessage(
-        '❌ ' + (err.response?.data?.error || 'Código inválido o expirado')
+        '❌ ' +
+        (err.response?.data?.error || 'Código inválido o expirado')
       )
     }
   }

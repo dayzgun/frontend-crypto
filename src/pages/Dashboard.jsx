@@ -17,7 +17,6 @@ export default function Dashboard() {
       <Container className="py-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="fw-bold">Curiosidades de Criptomonedas</h2>
-          <Button variant="outline-light" onClick={handleLogout}>Cerrar sesión</Button>
         </div>
 
         <Row>
