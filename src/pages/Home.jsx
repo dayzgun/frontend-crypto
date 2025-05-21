@@ -33,22 +33,19 @@ export default function Home() {
     }
 
     try {
-      // 1️⃣ Genera el hash SHA256 de la contraseña
       const hashed = SHA256(form.password).toString()
 
-      // 2️⃣ Envía AL BACKEND sólo el hash y el username
       const res = await axios.post(
         'https://crypto-backend-production-56d2.up.railway.app/login',
         {
-          username:      form.username,
+          username: form.username,
           password_hash: hashed,
         }
       )
 
-      // 3️⃣ Si responde ok, redirige a la verificación de código
       setVariant('success')
       setMessage('✅ Inicio de sesión exitoso')
-      setTimeout(() => navigate('/verify-code', { state: { username: form.username } }), 500)
+      setTimeout(() => navigate('/dashboard'), 500) // Redirige al dashboard
     } catch (err) {
       setVariant('danger')
       setMessage(
@@ -73,7 +70,6 @@ export default function Home() {
         }}
       >
         <div className="text-center mb-3">
-          {/* Logo */}
           <img
             src="/logo.png"
             alt="Crypto Logo"
@@ -84,11 +80,9 @@ export default function Home() {
           </h2>
         </div>
 
-        {/* Mensaje de error / éxito */}
         {message && <Alert variant={variant}>{message}</Alert>}
 
         <Form onSubmit={handleSubmit} autoComplete="off">
-          {/* Usuario */}
           <Form.Group className="mb-2">
             <Form.Label className="text-white">Usuario</Form.Label>
             <Form.Control
@@ -102,7 +96,6 @@ export default function Home() {
             />
           </Form.Group>
 
-          {/* Contraseña con toggle ver/ocultar */}
           <Form.Group className="mb-3">
             <Form.Label className="text-white">Contraseña</Form.Label>
             <InputGroup size="sm">
@@ -135,7 +128,6 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Enlace a Registro */}
           <div className="text-center">
             <span className="text-white me-1">¿No tienes cuenta?</span>
             <Link to="/register" className="fw-bold" style={{ color: '#646cff' }}>
