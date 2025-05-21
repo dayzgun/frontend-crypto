@@ -1,4 +1,3 @@
-// src/pages/ForgotPassword.jsx
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +18,9 @@ export default function ForgotPassword() {
       )
       setVariant('success')
       setMessage('✅ Se enviaron instrucciones al correo registrado.')
-      setTimeout(() => navigate('/reset-password', { state: { username } }), 1500)
+      setTimeout(() => {
+        navigate('/verify-reset-code', { state: { username } })
+      }, 1500)
     } catch (err) {
       setVariant('danger')
       setMessage('❌ ' + (err.response?.data?.error || 'Error al enviar instrucciones'))
@@ -41,8 +42,14 @@ export default function ForgotPassword() {
         }}
       >
         <div className="text-center mb-3">
-          <img src="/logo.png" alt="Crypto Logo" style={{ width: '60px', marginBottom: '0.75rem' }} />
-          <h2 className="fw-bold text-white" style={{ fontSize: '1.3rem' }}>Recuperar contraseña</h2>
+          <img
+            src="/logo.png"
+            alt="Crypto Logo"
+            style={{ width: '60px', marginBottom: '0.75rem' }}
+          />
+          <h2 className="fw-bold text-white" style={{ fontSize: '1.3rem' }}>
+            Recuperar contraseña
+          </h2>
           <p style={{ fontSize: '0.9rem' }}>Ingresa tu nombre de usuario</p>
         </div>
 
