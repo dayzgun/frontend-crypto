@@ -4,7 +4,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 import curiosidades from '../utils/curiosidadesCrypto'
 import { Button, Card } from 'react-bootstrap'
 import jsPDF from 'jspdf'
-import logo from '../assets/logo.png'
+
+// URL de un icono de “encriptación” (padlock + bits)
+const logoUrl = 'https://cdn-icons-png.flaticon.com/512/2921/2921222.png'
 
 export default function CuriosityPage() {
   const { id } = useParams()
@@ -21,37 +23,56 @@ export default function CuriosityPage() {
     doc.setFillColor(30, 30, 47)
     doc.rect(0, 0, pageWidth, doc.internal.pageSize.getHeight(), 'F')
 
-    // Logo
-    try {
-      const imgProps = doc.getImageProperties(logo)
+    // Cargar logo desde URL
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.src = logoUrl
+    img.onload = () => {
       const imgWidth = 30
-      const imgHeight = (imgProps.height * imgWidth) / imgProps.width
-      doc.addImage(logo, 'PNG', margin, margin, imgWidth, imgHeight)
-    } catch {
-      console.warn('No se pudo cargar el logo en el PDF')
+      const imgHeight = (img.height * imgWidth) / img.width
+      doc.addImage(img, 'PNG', margin, margin, imgWidth, imgHeight)
+
+      // Título centrado
+      doc.setFontSize(22)
+      doc.setTextColor(255, 255, 255)
+      doc.text(curiosidad.titulo, pageWidth / 2, margin + 40, { align: 'center' })
+
+      // Slogan
+      doc.setFontSize(12)
+      doc.setTextColor(200)
+      doc.text(slogan, pageWidth / 2, margin + 50, { align: 'center' })
+
+      // Descripción
+      doc.setFontSize(11)
+      doc.setTextColor(255, 255, 255)
+      const textLines = doc.splitTextToSize(curiosidad.descripcion, pageWidth - margin * 2)
+      let cursorY = margin + 65
+      textLines.forEach(line => {
+        doc.text(line, margin, cursorY)
+        cursorY += 7
+      })
+
+      doc.save(`curiosidad_${curiosidad.id}.pdf`)
     }
-
-    // Título centrado
-    doc.setFontSize(22)
-    doc.setTextColor(255, 255, 255)
-    doc.text(curiosidad.titulo, pageWidth / 2, margin + 40, { align: 'center' })
-
-    // Slogan
-    doc.setFontSize(12)
-    doc.setTextColor(200)
-    doc.text(slogan, pageWidth / 2, margin + 50, { align: 'center' })
-
-    // Descripción
-    doc.setFontSize(11)
-    doc.setTextColor(255, 255, 255)
-    const textLines = doc.splitTextToSize(curiosidad.descripcion, pageWidth - margin * 2)
-    let cursorY = margin + 65
-    textLines.forEach(line => {
-      doc.text(line, margin, cursorY)
-      cursorY += 7
-    })
-
-    doc.save(`curiosidad_${curiosidad.id}.pdf`)
+    img.onerror = () => {
+      console.warn('No se pudo cargar el logo en el PDF')
+      // Generar PDF sin logo en caso de error...
+      doc.setFontSize(22)
+      doc.setTextColor(255, 255, 255)
+      doc.text(curiosidad.titulo, pageWidth / 2, margin + 40, { align: 'center' })
+      doc.setFontSize(12)
+      doc.setTextColor(200)
+      doc.text(slogan, pageWidth / 2, margin + 50, { align: 'center' })
+      doc.setFontSize(11)
+      doc.setTextColor(255, 255, 255)
+      const textLines = doc.splitTextToSize(curiosidad.descripcion, pageWidth - margin * 2)
+      let cursorY = margin + 65
+      textLines.forEach(line => {
+        doc.text(line, margin, cursorY)
+        cursorY += 7
+      })
+      doc.save(`curiosidad_${curiosidad.id}.pdf`)
+    }
   }
 
   if (!curiosidad) {
@@ -68,7 +89,13 @@ export default function CuriosityPage() {
         style={{ maxWidth: '500px', width: '90%', borderRadius: '1.5rem', backgroundColor: '#1e1e2f' }}
       >
         <Card.Body>
-          {/* Aquí ya no hay tabla, sólo texto */}
+          {/* Logo de encriptación */}
+          <img
+            src={logoUrl}
+            alt="Logo Encriptación"
+            style={{ display: 'block', width: '50px', margin: '0 auto 1rem' }}
+          />
+
           <Card.Title as="h2" className="text-white text-center mb-3">
             {curiosidad.titulo}
           </Card.Title>
