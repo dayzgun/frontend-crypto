@@ -5,7 +5,7 @@ import { Form, Button, Alert, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 export default function VerifyCode() {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [code, setCode] = useState('')
   const [message, setMessage] = useState(null)
   const [variant, setVariant] = useState('info')
@@ -15,9 +15,8 @@ export default function VerifyCode() {
     e.preventDefault()
 
     try {
-      // enviamos email + código al backend
       const payload = {
-        email,                    // ahora pedimos el correo aquí
+        username,
         verification_code: code
       }
 
@@ -28,7 +27,6 @@ export default function VerifyCode() {
 
       setVariant('success')
       setMessage('✅ ' + res.data.msg)
-      // redirige al login después de un segundo
       setTimeout(() => navigate('/'), 1000)
     } catch (err) {
       setVariant('danger')
@@ -63,7 +61,7 @@ export default function VerifyCode() {
             Verificar cuenta
           </h2>
           <p style={{ fontSize: '0.9rem' }}>
-            Ingresa tu correo y el código que recibiste
+            Ingresa tu nombre de usuario y el código que recibiste
           </p>
         </div>
 
@@ -71,13 +69,13 @@ export default function VerifyCode() {
 
         <Form onSubmit={handleSubmit} autoComplete="off">
           <Form.Group className="mb-2">
-            <Form.Label className="text-white">Correo electrónico</Form.Label>
+            <Form.Label className="text-white">Nombre de usuario</Form.Label>
             <Form.Control
-              type="email"
-              name="email"
-              placeholder="ejemplo@correo.com"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              type="text"
+              name="username"
+              placeholder="usuario123"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
               required
               size="sm"
               autoComplete="off"
