@@ -1,3 +1,4 @@
+// src/pages/VerifyCodeReset.jsx
 import { useState } from 'react'
 import axios from 'axios'
 import { Form, Button, Alert, Card } from 'react-bootstrap'
@@ -23,7 +24,7 @@ export default function VerifyCodeReset() {
       setVariant('success')
       setMessage('✅ Código válido. Redirigiendo...')
       setTimeout(() => {
-        navigate('/reset-password', { state: { username } })
+        navigate('/reset-password', { state: { username, code } })
       }, 1000)
     } catch (err) {
       setVariant('danger')
@@ -61,7 +62,6 @@ export default function VerifyCodeReset() {
           </p>
         </div>
 
-        {/* 🟡 Mensaje de error o éxito */}
         {message && <Alert variant={variant}>{message}</Alert>}
 
         <Form onSubmit={handleSubmit} autoComplete="off">
