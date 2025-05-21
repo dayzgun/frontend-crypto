@@ -134,6 +134,15 @@ export default function Home() {
               Regístrate
             </Link>
           </div>
+
+<div className="text-center mt-2">
+  <Link to="/forgot-password" className="fw-bold" style={{ color: '#fbbc04' }}>
+    ¿Olvidaste tu contraseña? Haz clic aquí
+  </Link>
+</div>
+
+
+
         </Form>
       </Card>
     </div>
